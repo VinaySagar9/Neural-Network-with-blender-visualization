@@ -1,0 +1,22 @@
+{
+  "threshold": 1.220764398574829,
+  "features": [
+    "voltage",
+    "current",
+    "resistance",
+    "temperature",
+    "noise",
+    "gain",
+    "offset"
+  ],
+  "net": {
+    "hidden": 64,
+    "latent": 16
+  },
+  "prep": {
+    "fillna": "median",
+    "test_size": 0.2,
+    "val_size": 0.2,
+    "seed": 42
+  }
+}

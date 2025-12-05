@@ -1,0 +1,57 @@
+data:
+  mode: "manual"            # sqlite | csv | manual
+  features:
+    - voltage
+    - current
+    - resistance
+    - temperature
+    - noise
+    - gain
+    - offset
+
+  id_col: "id"
+  label_col: "is_anomaly"   # set to null if you don't have labels
+  normal_label_value: 0
+
+  sqlite:
+    db_path: "data/test.db"
+    sql_query: "select * from test_results;"
+    stream_query: "select * from test_results where id > ? order by id asc limit ?;"  # expects ascending id
+
+  csv:
+    path: "data/data.csv"
+    has_header: true
+    delimiter: ","
+
+  manual:
+    prompt: "enter comma-separated feature values: "
+
+prep:
+  fillna: "median"          # median | mean | drop
+  test_size: 0.20
+  val_size: 0.20
+  seed: 42
+
+net:
+  hidden: 64
+  latent: 16
+
+train:
+  epochs: 30
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0
+
+threshold:
+  method: "quantile"        # quantile | mean_std
+  quantile: 0.95
+  std_k: 3.0
+
+realtime:
+  host: "127.0.0.1"
+  port: 55888
+  poll_ms: 250              # sqlite/csv polling interval
+  batch_limit: 100
+  glow_scale: 25.0
+  pulse_scale: 10.0
+  pulse_decay: 0.87
